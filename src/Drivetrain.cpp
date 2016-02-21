@@ -40,8 +40,8 @@ void Drivetrain::DisableAllPID() {
 }
 
 void Drivetrain::DriveDist(float Distance) {
-	PIDLeft->SetSetpoint(Distance/WheelCirc);
-	PIDRight->SetSetpoint(Distance/WheelCirc);
+	PIDLeft->SetSetpoint(Distance);
+	PIDRight->SetSetpoint(Distance);
 
 	PIDLeft->Enable();
 	PIDRight->Enable();
@@ -58,6 +58,14 @@ void Drivetrain::Execute() {
 	} else if (PIDLeft->GetSetpoint() < 0.1 && PIDRight->GetSetpoint() < 0.1) {
 		PIDLeft->Disable();
 		PIDRight->Disable();
+	} else {
+		std::stringstream s;
+		s << PIDLeft->GetP();
+		SmartDashboard::PutString("DB/String 0", s.str());
+		s << PIDLeft->GetI();
+		SmartDashboard::PutString("DB/String 1", s.str());
+		s << PIDLeft->GetD();
+		SmartDashboard::PutString("DB/String 2", s.str());
 	}
 }
 

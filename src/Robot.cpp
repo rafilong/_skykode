@@ -9,13 +9,13 @@ RBVic((uint32_t) 3),
 LMotor(&LFVic, &LBVic, -1.0),
 RMotor(&RFVic, &RBVic, 1.0),
 
-ELeft((uint32_t) 0, (uint32_t) 1),
-ERight((uint32_t) 2, (uint32_t) 3),
+ELeft((uint32_t) 1, (uint32_t) 0),
+ERight((uint32_t) 3, (uint32_t) 2),
 
 Sensors(&ELeft, &ERight),
 
-Left((float) 0.1, (float) 0.0, (float) 0.0, Sensors.GetELeft(), &LMotor, 0.05),
-Right((float) 0.1, (float) 0.0, (float) 0.0, Sensors.GetELeft(), &RMotor, 0.05),
+Left(0.1, 0.0, 0.0, Sensors.GetELeft(), &LMotor, 0.05),
+Right(0.1, 0.0, 0.0, Sensors.GetELeft(), &RMotor, 0.05),
 
 RDrivetrain(&LMotor, &RMotor, &Sensors, &Left, &Right),
 RShooter(0, 1),
@@ -50,7 +50,7 @@ void Robot::DisabledPeriodic() {
 }
 
 void Robot::AutonomousInit() {
-	RDrivetrain.DriveDist(4*12);
+	RDrivetrain.DriveDist(4);
 }
 
 void Robot::AutonomousPeriodic() {
@@ -84,8 +84,14 @@ void Robot::TestInit() {
 }
 
 void Robot::TestPeriodic() {
-	if (RightJoystick.GetTrigger()) RDrivetrain.DrivePower(0.5);
-	if (LeftJoystick.GetTrigger()) RDrivetrain.DrivePower(0.5);
+	if (RightJoystick.GetTrigger()) {
+		RDrivetrain.DrivePower(0.5);
+	} else if (LeftJoystick.GetTrigger()) {
+		RDrivetrain.DrivePower(0.5);
+	} else {
+		RDrivetrain.DrivePower(0);
+	}
+	Execute();
 
 	RDrivetrain.GetSensors() -> PrintValues();
 }
