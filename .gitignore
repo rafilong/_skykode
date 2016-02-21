@@ -1,3 +1,11 @@
+# Custom
+*.xml
+*.properties
+*.project
+*.cproject
+Debug/
+.settings/
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
