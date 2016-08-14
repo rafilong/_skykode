@@ -28,6 +28,4 @@ public:
 	void Turn(float Degrees);
 	void Execute();
 	SensorGroup* GetSensors();
-private:
-	float SensCurve(float speed);
 };

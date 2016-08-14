@@ -18,6 +18,7 @@ class Robot : public IterativeRobot {
 	Shooter RShooter;
 	Accumulator RAccumulator;
 	Joystick LeftJoystick, RightJoystick, Xbox;
+	int AutoCycle = 0;
 public:
 	Robot();
 

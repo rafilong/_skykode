@@ -13,17 +13,17 @@ Drivetrain::Drivetrain(Motor* MLeft, Motor* MRight, SensorGroup* Sensor, PIDCont
 }
 
 void Drivetrain::DrivePower(float Power) {
-	DrivePower(Power, Power);
+	DrivePower(-Power, -Power);
 }
 
 void Drivetrain::DrivePower(float Left, float Right) {
-	LeftPower = SensCurve(Left);
-	RightPower = SensCurve(Right);
+	LeftPower = Left;
+	RightPower = Right;
 }
 
 void Drivetrain::DrivePower(float Left, float Right, float Multiplier) {
-	LeftPower = SensCurve(Left)*Multiplier;
-	RightPower = SensCurve(Right)*Multiplier;
+	LeftPower = Left*Multiplier;
+	RightPower = Right*Multiplier;
 }
 
 void Drivetrain::DriveSpeed(float Speed) {
@@ -53,26 +53,16 @@ void Drivetrain::Turn(float Degrees) {
 
 void Drivetrain::Execute() {
 	if (!PIDLeft->IsEnabled() && !PIDRight->IsEnabled()) {
-		LeftMotor -> SetPower(LeftPower);
-		RightMotor -> SetPower(RightPower);
+		LeftMotor -> SensPower(LeftPower);
+		RightMotor -> SensPower(RightPower);
 	} else if (PIDLeft->GetSetpoint() < 0.1 && PIDRight->GetSetpoint() < 0.1) {
 		PIDLeft->Disable();
 		PIDRight->Disable();
-	} else {
-		std::stringstream s;
-		s << PIDLeft->GetP();
-		SmartDashboard::PutString("DB/String 0", s.str());
-		s << PIDLeft->GetI();
-		SmartDashboard::PutString("DB/String 1", s.str());
-		s << PIDLeft->GetD();
-		SmartDashboard::PutString("DB/String 2", s.str());
 	}
+
+	Sensors->ResetEncoders();
 }
 
 SensorGroup* Drivetrain::GetSensors() {
 	return Sensors;
-}
-
-float Drivetrain::SensCurve(float speed) {
-	return speed * fabs(speed);
 }

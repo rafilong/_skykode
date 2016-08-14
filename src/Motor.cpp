@@ -1,19 +1,27 @@
 #include "Motor.h"
 
-Motor::Motor(Victor* FVic_, Victor* BVic_, float D) {
+Motor::Motor(Victor* FVic_, Victor* BVic_, float M) {
 	FVic = FVic_;
 	BVic = BVic_;
 
-    Direction = D;
+    Magnitude = M;
 }
 
 void Motor::SetPower(float Power) {
-    FVic -> Set(Power*Direction);
-    BVic -> Set(Power*Direction);
+    FVic -> Set(Magnitude*Power);
+    BVic -> Set(Magnitude*Power);
+}
+
+void Motor::SensPower(float Power) {
+	FVic -> Set(Magnitude*SensCurve(Power));
+	BVic -> Set(Magnitude*SensCurve(Power));
 }
 
 void Motor::PIDWrite(float Output) {
-	FVic -> PIDWrite(Output*Direction);
-	BVic -> PIDWrite(Output*Direction);
+	FVic -> PIDWrite(Magnitude*Output);
+	BVic -> PIDWrite(Magnitude*Output);
 }
 
+float Motor::SensCurve(float Speed) {
+	return Speed * fabs(Speed);
+}

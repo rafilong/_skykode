@@ -10,7 +10,7 @@ Accumulator::Accumulator(int LiftPort, int SpinPort) :
 }
 
 void Accumulator::SetLiftPower(float Power) {
-	if (Status == LiftStatus::NO) LiftPower = Power * -0.25;
+	if (Status == LiftStatus::NO) LiftPower = Power * 0.25;
 }
 
 void Accumulator::SetSpinPower(float Power) {
